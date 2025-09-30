@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>ProjectClock</title>
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; style-src 'self' 'unsafe-inline'"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header>
+      <h1>🕒 ProjectClock</h1>
+    </header>
+
+    <main>
+      <!-- Project List View -->
+      <section id="projectListView" class="project-list-view">
+        <div class="project-list-header">
+          <h2>📁 Projects</h2>
+          <div class="project-actions">
+            <button id="btnAddProject" class="primary-btn">
+              <span class="btn-icon">➕</span>
+              <span class="btn-text">New Project</span>
+            </button>
+            <button id="btnDeleteAllProjects" class="danger-btn" hidden>
+              <span class="btn-icon">🗑️</span>
+              <span class="btn-text">Delete All</span>
+            </button>
+          </div>
+        </div>
+        
+        <div class="projects-container">
+          <div id="projectsEmpty" class="empty-state">
+            <div class="empty-icon">📁</div>
+            <p>No projects yet</p>
+            <small>Click "New Project" to create your first project</small>
+          </div>
+          <div id="projectsList" class="projects-list"></div>
+        </div>
+      </section>
+
+      <!-- Add Project Form -->
+      <section id="addProjectForm" class="add-project-form" hidden>
+        <div class="form-header">
+          <h2>📁 Create New Project</h2>
+          <button id="cancelProject" class="close-btn" title="Close">✕</button>
+        </div>
+        <div class="form-content">
+          <div class="row">
+            <label>📝 Project Name</label>
+            <input id="projectName" type="text" placeholder="Enter project name..." maxlength="50" required />
+          </div>
+          <div class="row full-width">
+            <label>🎯 Project Aim</label>
+            <textarea id="projectAim" rows="6" placeholder="Describe your project goals and objectives..." maxlength="500"></textarea>
+          </div>
+        </div>
+        <div class="form-actions">
+          <button id="saveProject" class="primary-btn">
+            <span class="btn-icon">💾</span>
+            <span class="btn-text">Create Project</span>
+          </button>
+          <button id="cancelProjectAlt" class="ghost-btn">
+            <span class="btn-text">Cancel</span>
+          </button>
+        </div>
+      </section>
+
+      <!-- Timer View -->
+      <section id="timerView" class="timer-view" hidden>
+        <div class="timer-header">
+          <button id="backToProjects" class="back-btn">
+            <span class="btn-icon">←</span>
+            <span class="btn-text">Projects</span>
+          </button>
+          <div class="current-project-info">
+            <h2 id="currentProjectName">Project Name</h2>
+            <button id="showProjectAim" class="ghost-btn">
+              <span class="btn-icon">🎯</span>
+              <span class="btn-text">View Aim</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Project Aim Modal -->
+        <div id="projectAimModal" class="modal" hidden>
+          <div class="modal-content">
+            <div class="modal-header">
+              <h3>🎯 Project Aim</h3>
+              <button id="closeAimModal" class="close-btn">✕</button>
+            </div>
+            <div class="modal-body">
+              <p id="projectAimText"></p>
+            </div>
+          </div>
+        </div>
+
+        <section class="timer-card">
+          <div class="timer-display">
+            <div class="progress-ring">
+              <svg class="progress-ring-svg" width="200" height="200">
+                <circle class="progress-ring-bg" cx="100" cy="100" r="90" />
+                <circle class="progress-ring-fill" cx="100" cy="100" r="90" />
+              </svg>
+              <div id="display">00:00:00</div>
+              <div class="timer-status" id="timerStatus">Ready to start</div>
+            </div>
+          </div>
+        <div class="session-stats">
+          <div class="stat">
+            <span class="stat-value" id="sessionCount">0</span>
+            <span class="stat-label">Sessions</span>
+          </div>
+          <div class="stat">
+            <span class="stat-value" id="totalTime">00:00:00</span>
+            <span class="stat-label">Total Time</span>
+          </div>
+          <div class="stat">
+            <span class="stat-value" id="noteCount">0</span>
+            <span class="stat-label">Notes</span>
+          </div>
+        </div>
+        <div class="controls">
+          <button id="btnToggle" class="primary-btn">
+            <span class="btn-icon">▶️</span>
+            <span class="btn-text">Start</span>
+          </button>
+          <button id="btnReset" class="secondary-btn">
+            <span class="btn-icon">↺</span>
+            <span class="btn-text">Reset</span>
+          </button>
+          <button id="btnAddNote" class="accent-btn">
+            <span class="btn-icon">✚</span>
+            <span class="btn-text">Add Note</span>
+          </button>
+        </div>
+      </section>
+
+      <section class="note-editor" id="noteEditor" hidden>
+        <div class="note-editor-header">
+          <h2>📍 Add Note</h2>
+          <button id="cancelNote" class="close-btn" title="Close">✕</button>
+        </div>
+        <div class="note-editor-content">
+          <div class="row">
+            <label>⏰ Time</label>
+            <input id="noteTime" readonly class="time-input" />
+          </div>
+          <div class="row full-width">
+            <label>📝 Note</label>
+            <textarea
+              id="noteText"
+              rows="4"
+              placeholder="What happened at this time? Write your note here..."
+            ></textarea>
+          </div>
+          <div class="row">
+            <label>🏷️ Category</label>
+            <select id="noteCategory">
+              <option value="general">📄 General</option>
+              <option value="task">✅ Task</option>
+              <option value="milestone">🎯 Milestone</option>
+              <option value="break">☕ Break</option>
+              <option value="meeting">👥 Meeting</option>
+            </select>
+          </div>
+          <div class="row">
+            <label>📊 Status</label>
+            <select id="noteStatus">
+              <option value="new">🆕 Just created</option>
+              <option value="processing">⏳ In progress</option>
+              <option value="done">✅ Completed</option>
+            </select>
+          </div>
+          <div class="quick-actions">
+            <button type="button" class="quick-btn" data-template="task">
+              ➕ Task
+            </button>
+            <button type="button" class="quick-btn" data-template="break">
+              ☕ Break
+            </button>
+            <button type="button" class="quick-btn" data-template="meeting">
+              👥 Meeting
+            </button>
+          </div>
+        </div>
+        <div class="note-editor-actions">
+          <button id="saveNote" class="primary-btn">
+            <span class="btn-icon">💾</span>
+            <span class="btn-text">Save Note</span>
+          </button>
+          <button id="cancelNoteAlt" class="ghost-btn">
+            <span class="btn-text">Cancel</span>
+          </button>
+        </div>
+      </section>
+
+      <section class="notes-list">
+        <div class="notes-header">
+          <h2>📚 Session Notes</h2>
+          <div class="notes-actions">
+            <button id="exportNotes" class="secondary-btn" title="Export notes">
+              <span class="btn-icon">📤</span>
+            </button>
+            <button id="clearAll" class="danger-btn" title="Clear all notes">
+              <span class="btn-icon">🗑️</span>
+            </button>
+          </div>
+        </div>
+        <div class="filters-panel">
+          <div class="search-box">
+            <input
+              type="text"
+              id="searchNotes"
+              placeholder="🔍 Search notes..."
+            />
+          </div>
+          <div class="filter-group">
+            <select id="filterStatus">
+              <option value="all">📋 All Status</option>
+              <option value="new">🆕 Just created</option>
+              <option value="processing">⏳ In progress</option>
+              <option value="done">✅ Completed</option>
+            </select>
+            <select id="filterCategory">
+              <option value="all">🏷️ All Categories</option>
+              <option value="general">📄 General</option>
+              <option value="task">✅ Task</option>
+              <option value="milestone">🎯 Milestone</option>
+              <option value="break">☕ Break</option>
+              <option value="meeting">👥 Meeting</option>
+            </select>
+          </div>
+        </div>
+        <div class="notes-container">
+          <div id="notesEmpty" class="empty-state" hidden>
+            <div class="empty-icon">📝</div>
+            <p>No notes yet</p>
+            <small>Click "Add Note" to create your first note</small>
+          </div>
+          <ul id="notes"></ul>
+        </div>
+      </section>
+      </section> <!-- End Timer View -->
+    </main>
+
+    <footer>
+      <small>Local storage is used for persistence. &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Made by <a href="https://hazratali.me" target="_blank" rel="noopener noreferrer">Hazrat Ali</a></small>
+    </footer>
+
+    <script src="renderer.js"></script>
+  </body>
+</html>

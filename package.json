@@ -1,0 +1,71 @@
+{
+  "name": "projectclock",
+  "version": "1.0.0",
+  "description": "Professional project time tracking with smart notes and session management",
+  "main": "src/main.js",
+  "author": {
+    "name": "Hazrat Ali",
+    "email": "your-email@example.com",
+    "url": "https://hazratali.me"
+  },
+  "productName": "ProjectClock",
+  "appId": "com.nextwebz.projectclock",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/projectclock.git"
+  },
+  "keywords": [
+    "time-tracking",
+    "project-management",
+    "productivity",
+    "notes",
+    "electron",
+    "desktop-app",
+    "timer",
+    "session-tracking"
+  ],
+  "homepage": "https://github.com/yourusername/projectclock#readme",
+  "bugs": {
+    "url": "https://github.com/yourusername/projectclock/issues"
+  },
+  "scripts": {
+    "start": "electron src/main.js",
+    "dev": "electron src/main.js --development",
+    "build": "electron-builder",
+    "build:win": "electron-builder --win",
+    "build:mac": "electron-builder --mac",
+    "build:linux": "electron-builder --linux",
+    "build:dir": "electron-builder --dir",
+    "dist": "npm run build",
+    "pack": "electron-builder --dir",
+    "clean": "rimraf dist build",
+    "lint": "echo 'No linting configured yet'",
+    "test": "echo 'No tests configured yet'"
+  },
+  "build": {
+    "files": [
+      "src/**/*",
+      "assets/**/*",
+      "package.json"
+    ],
+    "asar": true,
+    "directories": {
+      "output": "dist"
+    },
+    "win": {
+      "target": "nsis",
+      "sign": false,
+      "verifyUpdateCodeSignature": false
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true
+    }
+  },
+  "devDependencies": {
+    "electron": "^31.0.0",
+    "electron-builder": "^25.1.8",
+    "electron-packager": "^17.1.2"
+  }
+}
